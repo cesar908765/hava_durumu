@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=128, height=160, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>MicroWeather Pro</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; max-width: 100%; }
+    
+    /* 🎨 RENK PALETLERİ */
+    :root, :root.theme-day {
+      --bg: #ffffff;
+      --panel: #f0f4f8;
+      --text: #1a202c;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-contrast: #ffffff;
+      --border: #cbd5e1;
+      --nav-bg: #e2e8f0;
+      --font-size: 8px;
+    }
+
+    :root.theme-dark {
+      --bg: #000000;
+      --panel: #121212;
+      --text: #ffffff;
+      --muted: #888888;
+      --accent: #ffffff;
+      --accent-contrast: #000000;
+      --border: #333333;
+      --nav-bg: #1e1e1e;
+    }
+
+    :root.theme-matrix {
+      --bg: #000000;
+      --panel: #051405;
+      --text: #00ff66;
+      --muted: #008833;
+      --accent: #00ff66;
+      --accent-contrast: #000000;
+      --border: #004411;
+      --nav-bg: #0a290a;
+    }
+
+    :root.theme-amber {
+      --bg: #120a00;
+      --panel: #241400;
+      --text: #ffb000;
+      --muted: #996600;
+      --accent: #ffb000;
+      --accent-contrast: #120a00;
+      --border: #4d3300;
+      --nav-bg: #382000;
+    }
+
+    :root.theme-blue, :root.theme-cyber {
+      --bg: #0f051d;
+      --panel: #1b0a33;
+      --text: #00ffff;
+      --muted: #a855f7;
+      --accent: #ff007f;
+      --accent-contrast: #ffffff;
+      --border: #4c1d95;
+      --nav-bg: #2e1065;
+    }
+
+    :root.theme-gameboy {
+      --bg: #8b956d;
+      --panel: #9bbc0f;
+      --text: #0f380f;
+      --muted: #306230;
+      --accent: #0f380f;
+      --accent-contrast: #9bbc0f;
+      --border: #306230;
+      --nav-bg: #8bac0f;
+    }
+
+    html, body {
+      width: 128px;
+      height: 160px;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: monospace, sans-serif;
+      font-size: var(--font-size);
+      overflow: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .container {
+      width: 128px;
+      height: 160px;
+      margin: 0 auto;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .topbar {
+      padding: 2px 4px;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      flex: 0 0 auto;
+    }
+
+    .datetime {
+      font-size: 8px;
+      font-weight: bold;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .screen {
+      padding: 3px;
+      flex: 1 1 auto;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .screen::-webkit-scrollbar { display: none; }
+    .hidden { display: none !important; }
+
+    .app-title {
+      font-size: 9px;
+      margin: 1px 0 3px 0;
+      text-align: center;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .screen h2 {
+      font-size: 8px;
+      margin: 1px 0 3px 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .search-wrap {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    .search-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 2px 3px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      font-size: 8px;
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: var(--accent-contrast);
+      border: 1px solid var(--border);
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 7px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: bold;
+    }
+
+    .btn.full {
+      width: 100%;
+      margin-top: 3px;
+    }
+
+    /* Hava Durumu Kartı */
+    .weather-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 3px;
+      text-align: center;
+      margin-bottom: 3px;
+    }
+
+    .city-name {
+      font-size: 9px;
+      font-weight: bold;
+      color: var(--text);
+    }
+
+    .weather-main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin: 1px 0;
+    }
+
+    .weather-icon {
+      font-size: 15px;
+    }
+
+    .temp-val {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 2px;
+      padding-top: 2px;
+      border-top: 1px solid var(--border);
+      font-size: 6px;
+      text-align: left;
+    }
+
+    /* Menü Listesi */
+    .menu-list {
+      list-style: none;
+      padding: 0;
+      margin: 2px 0;
+    }
+
+    .menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 3px;
+      margin-bottom: 2px;
+      font-size: 7px;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .menu-item:hover, .menu-item:focus {
+      background: var(--accent);
+      color: var(--accent-contrast);
+    }
+
+    .menu-item .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--accent);
+      color: var(--accent-contrast);
+      font-size: 6px;
+      font-weight: bold;
+    }
+
+    /* Liste Görünümleri */
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 2px 0;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 2px 3px;
+      margin-bottom: 2px;
+      font-size: 6px;
+    }
+
+    .setting-row {
+      margin: 3px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .setting-row label {
+      font-size: 6px;
+      color: var(--muted);
+    }
+
+    select {
+      padding: 2px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      font-size: 7px;
+      background: var(--panel);
+      color: var(--text);
+      width: 100%;
+    }
+
+    .softkey-bar {
+      padding: 2px 4px;
+      border-top: 1px solid var(--border);
+      background: var(--nav-bg);
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2px;
+      height: 15px;
+    }
+
+    .softkey {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-size: 8px;
+      font-weight: bold;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .status {
+      font-size: 7px;
+      color: var(--muted);
+      text-align: center;
+      flex: 1 1 auto;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="container">
+    <header class="topbar">
+      <div id="datetime" class="datetime"></div>
+    </header>
+
+    <!-- ANA HAVA DURUMU EKRANI -->
+    <main class="screen" id="screen-home" data-screen="home">
+      <h1 class="app-title">MicroWeather Pro</h1>
+
+      <div class="search-wrap">
+        <input id="city-input" class="search-input" type="search" placeholder="Şehir..." value="Gelibolu" />
+        <button id="btn-search" class="btn">Ara</button>
+      </div>
+
+      <div class="weather-card">
+        <div id="city-title" class="city-name">Yükleniyor...</div>
+        <div class="weather-main">
+          <div id="weather-icon" class="weather-icon">🌤️</div>
+          <div id="temp-val" class="temp-val">--°C</div>
+        </div>
+        <div id="weather-desc" style="font-size:7px; color:var(--muted);">--</div>
+        
+        <div class="details-grid">
+          <div>🌡️ Hissedilen: <span id="app-temp">--</span></div>
+          <div>💧 Nem: <span id="humidity-val">%--</span></div>
+          <div>💨 Rüzgar: <span id="wind-val">--</span></div>
+          <div>🧭 Yön: <span id="wind-dir">--</span></div>
+          <div>🌅 Doğum: <span id="sunrise-val">--:--</span></div>
+          <div>🌇 Batım: <span id="sunset-val">--:--</span></div>
+          <div>☀️ UV İndeks: <span id="uv-val">--</span></div>
+          <div>📉 Basınç: <span id="pressure-val">--</span></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MENÜ EKRANI -->
+    <main class="screen hidden" id="screen-menu" data-screen="menu">
+      <h2>Menü</h2>
+      <ul class="menu-list">
+        <li><button class="menu-item" onclick="showScreen('home')"><span class="num">1</span> Anlık Hava</button></li>
+        <li><button class="menu-item" onclick="showScreen('daily')"><span class="num">2</span> 7 Günlük Tahmin</button></li>
+        <li><button class="menu-item" onclick="showScreen('hourly')"><span class="num">3</span> Saatlik Akış</button></li>
+        <li><button class="menu-item" onclick="showScreen('favs')"><span class="num">4</span> Favori Şehirler</button></li>
+        <li><button class="menu-item" onclick="showScreen('settings')"><span class="num">5</span> Ayarlar</button></li>
+        <li><button class="menu-item" onclick="showScreen('help')"><span class="num">6</span> Yardım</button></li>
+      </ul>
+    </main>
+
+    <!-- 7 GÜNLÜK TAHMİN -->
+    <main class="screen hidden" id="screen-daily" data-screen="daily">
+      <h2>7 Günlük Tahmin</h2>
+      <div id="daily-list" class="list"></div>
+    </main>
+
+    <!-- SAATLİK TAHMİN -->
+    <main class="screen hidden" id="screen-hourly" data-screen="hourly">
+      <h2>Saatlik Akış</h2>
+      <div id="hourly-list" class="list"></div>
+    </main>
+
+    <!-- FAVORİ ŞEHİRLER -->
+    <main class="screen hidden" id="screen-favs" data-screen="favs">
+      <h2>Favoriler</h2>
+      <button id="btn-add-fav" class="btn full" style="margin-bottom:3px;">+ Mevcut Şehri Ekle</button>
+      <div id="favs-list" class="list"></div>
+    </main>
+
+    <!-- AYARLAR -->
+    <main class="screen hidden" id="screen-settings" data-screen="settings">
+      <h2>Ayarlar</h2>
+      <div class="setting-row">
+        <label>Sıcaklık Birimi</label>
+        <select id="unit-select">
+          <option value="celsius">Celsius (°C)</option>
+          <option value="fahrenheit">Fahrenheit (°F)</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <label>Görünüm / Tema</label>
+        <select id="theme-select">
+          <option value="theme-day">☀️ Gündüz (Açık)</option>
+          <option value="theme-dark">🌙 Gece (Koyu)</option>
+          <option value="theme-matrix">📟 Matrix Yeşil</option>
+          <option value="theme-amber">🟧 Nokia Kehribar</option>
+          <option value="theme-blue">🌊 Gece Mavisi</option>
+          <option value="theme-gameboy">🕹️ GameBoy Zeytin</option>
+        </select>
+      </div>
+    </main>
+
+    <!-- YARDIM -->
+    <main class="screen hidden" id="screen-help" data-screen="help">
+      <h2>Yardım</h2>
+      <div style="font-size:6px; line-height:1.3;">
+        • <strong>Sol Tuş (Menu):</strong> Menüyü açar.<br>
+        • <strong>Sağ Tuş (0/Backspace):</strong> Geri döner.<br>
+        • <strong>Rakam Tuşları (1-6):</strong> Menüde hızlı seçim yapar.<br>
+        • Open-Meteo ücretsiz API kullanılmaktadır.
+      </div>
+    </main>
+
+    <footer class="softkey-bar">
+      <button id="btn-lsk" class="softkey">Menu</button>
+      <div class="status" id="status">Hazır</div>
+      <button id="btn-rsk" class="softkey">Geri</button>
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      const screens = {
+        home: document.getElementById('screen-home'),
+        menu: document.getElementById('screen-menu'),
+        daily: document.getElementById('screen-daily'),
+        hourly: document.getElementById('screen-hourly'),
+        favs: document.getElementById('screen-favs'),
+        settings: document.getElementById('screen-settings'),
+        help: document.getElementById('screen-help')
+      };
+
+      const cityInput = document.getElementById('city-input');
+      const btnSearch = document.getElementById('btn-search');
+      const cityTitle = document.getElementById('city-title');
+      const weatherIcon = document.getElementById('weather-icon');
+      const tempVal = document.getElementById('temp-val');
+      const weatherDesc = document.getElementById('weather-desc');
+      const appTemp = document.getElementById('app-temp');
+      const humidityVal = document.getElementById('humidity-val');
+      const windVal = document.getElementById('wind-val');
+      const windDir = document.getElementById('wind-dir');
+      const sunriseVal = document.getElementById('sunrise-val');
+      const sunsetVal = document.getElementById('sunset-val');
+      const uvVal = document.getElementById('uv-val');
+      const pressureVal = document.getElementById('pressure-val');
+      const dailyList = document.getElementById('daily-list');
+      const hourlyList = document.getElementById('hourly-list');
+      const favsList = document.getElementById('favs-list');
+      const btnAddFav = document.getElementById('btn-add-fav');
+      const unitSelect = document.getElementById('unit-select');
+      const themeSelect = document.getElementById('theme-select');
+      const statusEl = document.getElementById('status');
+      const datetimeEl = document.getElementById('datetime');
+      const btnLsk = document.getElementById('btn-lsk');
+      const btnRsk = document.getElementById('btn-rsk');
+
+      const dayNames = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+      const navStack = [];
+
+      let currentCity = 'Gelibolu';
+      let weatherCache = null;
+      let favorites = ['Gelibolu', 'Istanbul', 'Canakkale'];
+      let settings = {
+        unit: 'celsius',
+        theme: 'theme-day'
+      };
+
+      function setStatus(txt) { statusEl.textContent = txt; }
+
+      function updateDateTime() {
+        const now = new Date();
+        datetimeEl.textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      }
+
+      function loadAll() {
+        try { favorites = JSON.parse(localStorage.getItem('mw_favs_v1') || '["Gelibolu","Istanbul","Canakkale"]'); } catch (e) {}
+        try { Object.assign(settings, JSON.parse(localStorage.getItem('mw_set_v1') || '{}')); } catch (e) {}
+      }
+
+      function saveAll() {
+        try { localStorage.setItem('mw_favs_v1', JSON.stringify(favorites)); } catch (e) {}
+        try { localStorage.setItem('mw_set_v1', JSON.stringify(settings)); } catch (e) {}
+      }
+
+      function getWeatherDetails(code) {
+        if (code === 0) return { icon: '☀️', desc: 'Açık Güneşli' };
+        if (code >= 1 && code <= 3) return { icon: '⛅', desc: 'Parçalı Bulutlu' };
+        if (code >= 45 && code <= 48) return { icon: '🌫️', desc: 'Sisli' };
+        if (code >= 51 && code <= 67) return { icon: '🌧️', desc: 'Yağmurlu' };
+        if (code >= 71 && code <= 77) return { icon: '❄️', desc: 'Kar Yağışlı' };
+        if (code >= 80 && code <= 82) return { icon: '🌦️', desc: 'Sağanak' };
+        if (code >= 95) return { icon: '⛈️', desc: 'Fırtına' };
+        return { icon: '🌤️', desc: 'Normal' };
+      }
+
+      function formatTime(isoStr) {
+        if (!isoStr) return '--:--';
+        const parts = isoStr.split('T');
+        return parts.length > 1 ? parts[1].substring(0, 5) : '--:--';
+      }
+
+      function getWindDirection(deg) {
+        const dirs = ['K', 'KD', 'D', 'GD', 'G', 'GB', 'B', 'KB'];
+        return dirs[Math.round(deg / 45) % 8];
+      }
+
+      function renderScreen(name) {
+        if (!screens[name]) name = 'home';
+        Object.values(screens).forEach(s => s.classList.add('hidden'));
+        screens[name].classList.remove('hidden');
+      }
+
+      window.showScreen = function(name) {
+        const cur = document.querySelector('.screen:not(.hidden)')?.getAttribute('data-screen');
+        if (cur !== name) navStack.push(cur || 'home');
+        renderScreen(name);
+      };
+
+      function goBack() {
+        if (!navStack.length) { renderScreen('home'); return; }
+        renderScreen(navStack.pop());
+      }
+
+      window.getWeather = function(cityName) {
+        if (!cityName) return;
+        currentCity = cityName;
+        setStatus('Aranıyor...');
+        cityTitle.textContent = 'Getiriliyor...';
+
+        fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=tr&format=json`)
+          .then(res => res.json())
+          .then(data => {
+            if (!data.results || data.results.length === 0) {
+              cityTitle.textContent = 'Bulunamadı';
+              setStatus('Şehir Bulunamadı');
+              return;
+            }
+
+            const city = data.results[0];
+            const name = city.name;
+            const lat = city.latitude;
+            const lon = city.longitude;
+
+            const unitParam = settings.unit === 'fahrenheit' ? '&temperature_unit=fahrenheit' : '';
+            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,surface_pressure,apparent_temperature&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto${unitParam}`;
+
+            fetch(apiUrl)
+              .then(res => res.json())
+              .then(wData => {
+                weatherCache = wData;
+                const cw = wData.current_weather;
+                const daily = wData.daily;
+                const hourly = wData.hourly;
+                const details = getWeatherDetails(cw.weathercode);
+                const unitSym = settings.unit === 'fahrenheit' ? '°F' : '°C';
+
+                cityTitle.textContent = name;
+                weatherIcon.textContent = details.icon;
+                tempVal.textContent = `${Math.round(cw.temperature)}${unitSym}`;
+                weatherDesc.textContent = details.desc;
+
+                if (hourly) {
+                  appTemp.textContent = hourly.apparent_temperature ? `${Math.round(hourly.apparent_temperature[0])}${unitSym}` : '--';
+                  humidityVal.textContent = hourly.relativehumidity_2m ? `%${hourly.relativehumidity_2m[0]}` : '--';
+                  pressureVal.textContent = hourly.surface_pressure ? `${Math.round(hourly.surface_pressure[0])} hPa` : '--';
+                }
+
+                windVal.textContent = `${Math.round(cw.windspeed)} km/h`;
+                windDir.textContent = getWindDirection(cw.winddirection);
+
+                if (daily) {
+                  sunriseVal.textContent = formatTime(daily.sunrise[0]);
+                  sunsetVal.textContent = formatTime(daily.sunset[0]);
+                  uvVal.textContent = daily.uv_index_max[0] ? Math.round(daily.uv_index_max[0]) : '--';
+                }
+
+                renderDailyList();
+                renderHourlyList();
+                setStatus('Güncellendi');
+              })
+              .catch(() => setStatus('Hava Verisi Hatası'));
+          })
+          .catch(() => setStatus('Bağlantı Hatası'));
+      };
+
+      function renderDailyList() {
+        dailyList.innerHTML = '';
+        if (!weatherCache || !weatherCache.daily) return;
+        const daily = weatherCache.daily;
+        const unitSym = settings.unit === 'fahrenheit' ? '°F' : '°C';
+
+        for (let i = 0; i < daily.time.length; i++) {
+          const dateObj = new Date(daily.time[i]);
+          const dayLabel = dayNames[dateObj.getDay()];
+          const dayIcon = getWeatherDetails(daily.weathercode[i]).icon;
+          const maxT = Math.round(daily.temperature_2m_max[i]);
+          const minT = Math.round(daily.temperature_2m_min[i]);
+
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+            <span style="font-weight:bold; width:30px;">${i === 0 ? 'Bugün' : dayLabel}</span>
+            <span>${dayIcon}</span>
+            <span style="color:var(--accent); font-weight:bold;">${maxT}° / ${minT}° ${unitSym}</span>
+          `;
+          dailyList.appendChild(item);
+        }
+      }
+
+      function renderHourlyList() {
+        hourlyList.innerHTML = '';
+        if (!weatherCache || !weatherCache.hourly) return;
+        const hourly = weatherCache.hourly;
+        const unitSym = settings.unit === 'fahrenheit' ? '°F' : '°C';
+
+        for (let i = 0; i < 12; i++) {
+          const timeStr = formatTime(hourly.time[i]);
+          const temp = Math.round(hourly.temperature_2m[i]);
+
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+            <span style="font-weight:bold;">${timeStr}</span>
+            <span style="color:var(--accent); font-weight:bold;">${temp}${unitSym}</span>
+          `;
+          hourlyList.appendChild(item);
+        }
+      }
+
+      function renderFavsList() {
+        favsList.innerHTML = '';
+        favorites.forEach((c, idx) => {
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+            <span style="font-weight:bold; cursor:pointer;" onclick="getWeather('${c}'); showScreen('home');">${c}</span>
+            <button class="btn" style="padding:1px 3px; font-size:6px; background:var(--muted);" onclick="removeFav(${idx})">Sil</button>
+          `;
+          favsList.appendChild(item);
+        });
+      }
+
+      window.removeFav = function(idx) {
+        favorites.splice(idx, 1);
+        saveAll();
+        renderFavsList();
+      };
+
+      function applyTheme() {
+        document.documentElement.className = settings.theme || 'theme-day';
+      }
+
+      document.addEventListener('keydown', (e) => {
+        const isInput = ['INPUT', 'SELECT'].includes(e.target.tagName);
+        if (['Escape', 'SoftLeft', 'F1'].includes(e.key) && !isInput) { e.preventDefault(); showScreen('menu'); }
+        if (['SoftRight', 'F2', 'Backspace', '0'].includes(e.key) && !isInput) { e.preventDefault(); goBack(); }
+        
+        if (document.querySelector('.screen:not(.hidden)')?.id === 'screen-menu' && /^[1-6]$/.test(e.key)) {
+          const menuActions = ['home', 'daily', 'hourly', 'favs', 'settings', 'help'];
+          showScreen(menuActions[parseInt(e.key) - 1]);
+        }
+      });
+
+      function init() {
+        loadAll();
+        unitSelect.value = settings.unit || 'celsius';
+        themeSelect.value = settings.theme || 'theme-day';
+        applyTheme();
+
+        btnLsk.onclick = () => showScreen('menu');
+        btnRsk.onclick = goBack;
+        btnSearch.onclick = () => getWeather(cityInput.value);
+        cityInput.onkeydown = (e) => { if (e.key === 'Enter') getWeather(cityInput.value); };
+
+        btnAddFav.onclick = () => {
+          if (!favorites.includes(currentCity)) {
+            favorites.push(currentCity);
+            saveAll();
+            renderFavsList();
+            alert(`${currentCity} eklendi!`);
+          }
+        };
+
+        unitSelect.onchange = (e) => {
+          settings.unit = e.target.value;
+          saveAll();
+          getWeather(currentCity);
+        };
+
+        themeSelect.onchange = (e) => {
+          settings.theme = e.target.value;
+          saveAll();
+          applyTheme();
+        };
+
+        renderFavsList();
+        renderScreen('home');
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        getWeather('Gelibolu');
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
