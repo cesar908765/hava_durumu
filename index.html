@@ -10,42 +10,42 @@
     /* 🎨 RENK PALETLERİ */
     :root, :root.theme-day {
       --bg: #ffffff;
-      --panel: #f1f5f9;
-      --text: #0f172a;
-      --accent: #2563eb;
-      --border: #cbd5e1;
+      --panel: #f8fafc;
+      --text: #000000;
+      --accent: #1d4ed8;
+      --border: #94a3b8;
       --nav-bg: #e2e8f0;
-      --muted: #475569;
+      --muted: #334155;
     }
 
     :root.theme-dark {
       --bg: #000000;
       --panel: #121212;
       --text: #ffffff;
-      --accent: #00ff66;
-      --border: #333333;
-      --nav-bg: #1e1e1e;
-      --muted: #aaaaaa;
+      --accent: #00e65c;
+      --border: #404040;
+      --nav-bg: #1a1a1a;
+      --muted: #cccccc;
     }
 
     :root.theme-amber {
-      --bg: #120a00;
-      --panel: #241400;
-      --text: #ffb000;
-      --accent: #ffb000;
-      --border: #4d3300;
-      --nav-bg: #382000;
-      --muted: #cc8800;
+      --bg: #000000;
+      --panel: #1a0f00;
+      --text: #ffb700;
+      --accent: #ffb700;
+      --border: #664600;
+      --nav-bg: #2e1a00;
+      --muted: #dd9900;
     }
 
     :root.theme-matrix {
       --bg: #000000;
-      --panel: #051405;
+      --panel: #041404;
       --text: #00ff66;
       --accent: #00ff66;
-      --border: #004411;
+      --border: #005511;
       --nav-bg: #0a290a;
-      --muted: #00aa44;
+      --muted: #00cc44;
     }
 
     html, body {
@@ -54,7 +54,7 @@
       background: var(--bg);
       color: var(--text);
       font-family: Arial, sans-serif;
-      font-size: 9px;
+      font-size: 8.5px;
       font-weight: bold;
       overflow: hidden;
       user-select: none;
@@ -71,7 +71,7 @@
 
     /* ÜST BAR */
     .topbar {
-      height: 15px;
+      height: 14px;
       background: var(--nav-bg);
       border-bottom: 1px solid var(--border);
       display: flex;
@@ -83,7 +83,7 @@
 
     .screen {
       flex: 1;
-      padding: 2px 3px;
+      padding: 2px;
       overflow-y: auto;
       scrollbar-width: none;
     }
@@ -92,50 +92,51 @@
     .hidden { display: none !important; }
 
     .app-title {
-      font-size: 10px;
+      font-size: 9.5px;
       text-align: center;
       color: var(--accent);
       margin-bottom: 2px;
       text-transform: uppercase;
     }
 
-    /* SIKIŞMAYAN ANA HAVA KARTI */
+    /* KAYDIRMASIZ ANA HAVA KARTI */
     .card {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 3px;
+      border-radius: 3px;
+      padding: 2px 3px;
     }
 
     .city-title {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text);
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: 1.1;
     }
 
     .weather-main {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 3px;
       margin: 1px 0;
     }
 
-    .weather-icon { font-size: 20px; line-height: 20px; }
-    .temp-large { font-size: 18px; font-weight: 900; color: var(--accent); }
+    .weather-icon { font-size: 16px; line-height: 16px; }
+    .temp-large { font-size: 16px; font-weight: 900; color: var(--accent); line-height: 16px; }
 
-    /* TAŞMAYAN KOMPAKT BİLGİ LİSTESİ */
+    /* TAM EKRANA SIĞAN BİLGİ DİZİLİMİ */
     .info-grid {
       display: flex;
       flex-direction: column;
-      gap: 2px;
-      margin-top: 3px;
-      padding-top: 3px;
+      gap: 1.5px;
+      margin-top: 2px;
+      padding-top: 2px;
       border-top: 1px solid var(--border);
-      font-size: 8px;
+      font-size: 7.5px;
     }
 
     .info-row {
@@ -147,15 +148,6 @@
 
     .val { color: var(--accent); font-weight: bold; }
 
-    .meta-info {
-      font-size: 7px;
-      color: var(--muted);
-      text-align: center;
-      margin-top: 3px;
-      padding-top: 2px;
-      border-top: 1px dashed var(--border);
-    }
-
     /* LİSTELER & MENÜ */
     .menu-list { list-style: none; padding: 0; }
 
@@ -163,33 +155,39 @@
       width: 100%;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 3px;
-      padding: 3px;
+      padding: 2.5px 3px;
       margin-bottom: 2px;
       font-size: 8px;
       color: var(--text);
       cursor: pointer;
       text-align: left;
       font-weight: bold;
+      outline: none;
     }
 
     .menu-item:hover, .menu-item:focus {
       background: var(--accent);
-      color: #fff;
+      color: #ffffff;
+    }
+
+    .menu-item:hover .num, .menu-item:focus .num {
+      background: #ffffff;
+      color: #000000;
     }
 
     .menu-item .num {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 11px;
-      height: 11px;
+      width: 10px;
+      height: 10px;
       border-radius: 2px;
       background: var(--accent);
-      color: #fff;
+      color: #ffffff;
       font-size: 7px;
       font-weight: bold;
     }
@@ -206,15 +204,15 @@
       font-size: 8px;
     }
 
-    /* INPUT & AYARLAR */
+    /* INPUT & SELECTIONS */
     input, select {
       width: 100%;
-      height: 20px;
+      height: 18px;
       background: var(--panel);
       color: var(--text);
       border: 1px solid var(--accent);
-      padding: 2px;
-      font-size: 9px;
+      padding: 1px 2px;
+      font-size: 8px;
       font-weight: bold;
       border-radius: 3px;
       outline: none;
@@ -225,28 +223,29 @@
       width: 100%;
       height: 18px;
       background: var(--accent);
-      color: #fff;
+      color: #ffffff;
       border: none;
-      font-size: 9px;
+      font-size: 8.5px;
       font-weight: bold;
       border-radius: 3px;
       cursor: pointer;
+      outline: none;
     }
 
     .about-box {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 3px;
-      padding: 4px;
-      font-size: 7.5px;
+      padding: 3px;
+      font-size: 7px;
       color: var(--text);
-      line-height: 1.3;
-      margin-top: 3px;
+      line-height: 1.2;
+      margin-top: 2px;
     }
 
-    /* ALT BAR */
+    /* ALT BAR (SOFTKEY) */
     .softkey-bar {
-      height: 15px;
+      height: 14px;
       background: var(--nav-bg);
       border-top: 1px solid var(--border);
       display: flex;
@@ -265,15 +264,15 @@
       <span id="clock">00:00</span>
     </header>
 
-    <!-- SAYFA 1: ANA EKRAN KARTI -->
+    <!-- SAYFA 1: SIFIR KAYDIRMALI ANA EKRAN KARTI -->
     <main class="screen" id="screen-home" data-screen="home">
       <div class="card">
         <div id="city-title" class="city-title">Yükleniyor...</div>
         <div class="weather-main">
           <div id="weather-icon" class="weather-icon">🌤️</div>
           <div id="temp-val" class="temp-large">--°</div>
+          <div id="weather-desc" style="font-size:8px; color:var(--muted); margin-left:2px;">--</div>
         </div>
-        <div id="weather-desc" style="font-size:8px; color:var(--muted); text-align:center;">--</div>
         
         <div class="info-grid">
           <div class="info-row">
@@ -292,10 +291,10 @@
             <span>☀️ UV / 📉 Basınç:</span>
             <span><span id="uv-val" class="val">--</span> | <span id="pressure-val" class="val">--</span></span>
           </div>
-        </div>
-
-        <div class="meta-info">
-          <span>Güncelleme: <strong id="last-update" style="color:var(--accent);">--:--</strong></span>
+          <div class="info-row">
+            <span>🧊 Çiy Nkt / 🧭 Yön:</span>
+            <span><span id="dewpoint-val" class="val">--</span> | <span id="winddir-val" class="val">--</span></span>
+          </div>
         </div>
       </div>
     </main>
@@ -307,9 +306,8 @@
         <li><button class="menu-item" onclick="showScreen('home')"><span class="num">1</span> Anlık Hava</button></li>
         <li><button class="menu-item" onclick="showScreen('daily')"><span class="num">2</span> 7 Günlük Tahmin</button></li>
         <li><button class="menu-item" onclick="showScreen('hourly')"><span class="num">3</span> Saatlik Akış</button></li>
-        <li><button class="menu-item" onclick="showScreen('search')"><span class="num">4</span> Şehir Arama</button></li>
-        <li><button class="menu-item" onclick="showScreen('favs')"><span class="num">5</span> Favoriler</button></li>
-        <li><button class="menu-item" onclick="showScreen('settings')"><span class="num">6</span> Ayarlar & Bilgi</button></li>
+        <li><button class="menu-item" onclick="showScreen('search')"><span class="num">4</span> Şehir & Favoriler</button></li>
+        <li><button class="menu-item" onclick="showScreen('settings')"><span class="num">5</span> Ayarlar & Bilgi</button></li>
       </ul>
     </main>
 
@@ -319,37 +317,43 @@
       <div id="daily-list"></div>
     </main>
 
-    <!-- SAYFA 4: SAATLİK TAHMİN -->
+    <!-- SAYFA 4: İKONLU SAATLİK TAHMİN -->
     <main class="screen hidden" id="screen-hourly" data-screen="hourly">
       <div class="app-title">SAATLİK AKIŞ</div>
       <div id="hourly-list"></div>
     </main>
 
-    <!-- SAYFA 5: ŞEHİR ARAMA -->
+    <!-- SAYFA 5: BİRLEŞTİRİLMİŞ ŞEHİR ARAMA & FAVORİLER -->
     <main class="screen hidden" id="screen-search" data-screen="search">
-      <div class="app-title">ŞEHİR ARA</div>
-      <input id="city-input" type="text" placeholder="Şehir adı..." value="Gelibolu" />
-      <button id="btn-search" class="btn">YÜKLE</button>
+      <div class="app-title">ARAMA & FAVORİLER</div>
+      <input id="city-input" type="text" placeholder="Şehir ara (örn: geli)..." />
+      
+      <div id="search-section-header" style="font-size:7.5px; color:var(--accent); margin-bottom:2px;">FAVORİ ŞEHİRLER:</div>
+      <div id="results-and-favs-list"></div>
     </main>
 
-    <!-- SAYFA 6: FAVORİLER -->
-    <main class="screen hidden" id="screen-favs" data-screen="favs">
-      <div class="app-title">FAVORİLER</div>
-      <button id="btn-add-fav" class="btn" style="margin-bottom:3px;">+ FAVORİYE EKLE</button>
-      <div id="favs-list"></div>
-    </main>
-
-    <!-- SAYFA 7: AYARLAR VE HAKKINDA -->
+    <!-- SAYFA 6: AYARLAR VE ÇOKLU API SEÇİMİ -->
     <main class="screen hidden" id="screen-settings" data-screen="settings">
       <div class="app-title">AYARLAR</div>
       
-      <div style="font-size:8px; margin-bottom:1px;">Sıcaklık Birimi:</div>
+      <div style="font-size:7px; margin-bottom:1px;">API Sağlayıcı:</div>
+      <select id="api-select">
+        <option value="openmeteo">Open-Meteo</option>
+        <option value="weatherapi">WeatherAPI</option>
+        <option value="openweathermap">OpenWeather</option>
+        <option value="weatherbit">Weatherbit</option>
+      </select>
+
+      <div style="font-size:7px; margin-bottom:1px;">API Key (Gerekirse):</div>
+      <input id="apikey-input" type="password" placeholder="API Key..." />
+
+      <div style="font-size:7px; margin-bottom:1px;">Sıcaklık Birimi:</div>
       <select id="unit-select">
         <option value="celsius">Celsius (°C)</option>
         <option value="fahrenheit">Fahrenheit (°F)</option>
       </select>
 
-      <div style="font-size:8px; margin-bottom:1px; margin-top:2px;">Renk Teması:</div>
+      <div style="font-size:7px; margin-bottom:1px;">Renk Teması:</div>
       <select id="theme-select">
         <option value="theme-day">☀️ Gündüz (Aydınlık)</option>
         <option value="theme-dark">🌙 Gece (OLED Siyah)</option>
@@ -358,8 +362,7 @@
       </select>
 
       <div class="about-box">
-        <div><strong>Kaynak:</strong> Open-Meteo API</div>
-        <div><strong>Lisans:</strong> Ücretsiz / Açık Veri</div>
+        <div><strong>Kısayollar:</strong> [1]Yenile [3]API Swap</div>
         <div><strong>Son Güncelleme:</strong> <span id="about-update" style="color:var(--accent);">--:--</span></div>
       </div>
     </main>
@@ -367,8 +370,8 @@
     <!-- ALT BAR -->
     <footer class="softkey-bar">
       <span style="color:var(--accent);" onclick="showScreen('menu')">[Menu]</span>
-      <span id="status" style="color:var(--muted);">Hazır</span>
-      <span style="color:red;" onclick="goBack()">[Geri]</span>
+      <span id="status" style="color:var(--muted);">--:--</span>
+      <span style="color:#ef4444;" onclick="goBack()">[Geri]</span>
     </footer>
   </div>
 
@@ -380,12 +383,10 @@
         daily: document.getElementById('screen-daily'),
         hourly: document.getElementById('screen-hourly'),
         search: document.getElementById('screen-search'),
-        favs: document.getElementById('screen-favs'),
         settings: document.getElementById('screen-settings')
       };
 
       const cityInput = document.getElementById('city-input');
-      const btnSearch = document.getElementById('btn-search');
       const cityTitle = document.getElementById('city-title');
       const weatherIcon = document.getElementById('weather-icon');
       const tempVal = document.getElementById('temp-val');
@@ -397,25 +398,32 @@
       const sunsetVal = document.getElementById('sunset-val');
       const uvVal = document.getElementById('uv-val');
       const pressureVal = document.getElementById('pressure-val');
-      const lastUpdateEl = document.getElementById('last-update');
+      const dewpointVal = document.getElementById('dewpoint-val');
+      const winddirVal = document.getElementById('winddir-val');
       const aboutUpdateEl = document.getElementById('about-update');
       const dailyList = document.getElementById('daily-list');
       const hourlyList = document.getElementById('hourly-list');
-      const favsList = document.getElementById('favs-list');
-      const btnAddFav = document.getElementById('btn-add-fav');
+      const listContainer = document.getElementById('results-and-favs-list');
+      const listHeader = document.getElementById('search-section-header');
       const unitSelect = document.getElementById('unit-select');
       const themeSelect = document.getElementById('theme-select');
+      const apiSelect = document.getElementById('api-select');
+      const apikeyInput = document.getElementById('apikey-input');
       const statusEl = document.getElementById('status');
       const clockEl = document.getElementById('clock');
       const pageTitleEl = document.getElementById('page-title');
 
       const dayNames = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+      const apiLabels = { openmeteo: 'OM', weatherapi: 'WAPI', openweathermap: 'OWM', weatherbit: 'WBIT' };
+      const apiList = ['openmeteo', 'weatherapi', 'openweathermap', 'weatherbit'];
       const navStack = [];
 
       let currentCity = 'Gelibolu';
       let weatherCache = null;
+      let lastSuccessTime = '--:--';
+      let searchTimeout = null;
       let favorites = ['Gelibolu', 'Istanbul', 'Canakkale'];
-      let settings = { unit: 'celsius', theme: 'theme-day' };
+      let settings = { unit: 'celsius', theme: 'theme-day', apiProvider: 'openmeteo', apiKey: '' };
 
       function setStatus(txt) { statusEl.textContent = txt; }
 
@@ -432,6 +440,12 @@
       function saveAll() {
         try { localStorage.setItem('mwhd_favs', JSON.stringify(favorites)); } catch (e) {}
         try { localStorage.setItem('mwhd_set', JSON.stringify(settings)); } catch (e) {}
+      }
+
+      function getWindDirectionStr(deg) {
+        if (deg === undefined || deg === null) return '--';
+        const dirs = ['K', 'KD', 'D', 'GD', 'B', 'GB', 'B', 'KB'];
+        return dirs[Math.round(deg / 45) % 8];
       }
 
       function getWeatherDetails(code) {
@@ -456,6 +470,7 @@
         Object.values(screens).forEach(s => s.classList.add('hidden'));
         screens[name].classList.remove('hidden');
         pageTitleEl.textContent = name.toUpperCase();
+        if (name === 'search') renderSearchOrFavs();
       }
 
       window.showScreen = function(name) {
@@ -472,10 +487,32 @@
         renderScreen(navStack.pop());
       };
 
+      function navigateFavorites(direction) {
+        if (!favorites.length) return;
+        let idx = favorites.findIndex(c => c.toLowerCase() === currentCity.toLowerCase());
+        if (idx === -1) idx = 0;
+        else {
+          idx += direction;
+          if (idx < 0) idx = favorites.length - 1;
+          if (idx >= favorites.length) idx = 0;
+        }
+        getWeather(favorites[idx]);
+      }
+
+      /* 3 TUŞU İLE APILER ARASINDA HIZLI GEÇİŞ */
+      function cycleApiProvider() {
+        const currentIdx = apiList.indexOf(settings.apiProvider);
+        const nextIdx = (currentIdx + 1) % apiList.length;
+        settings.apiProvider = apiList[nextIdx];
+        apiSelect.value = settings.apiProvider;
+        saveAll();
+        getWeather(currentCity);
+      }
+
       window.getWeather = function(cityName) {
         if (!cityName) return;
         currentCity = cityName;
-        setStatus('Aranıyor...');
+        setStatus('Yükleniyor..');
         cityTitle.textContent = cityName.toUpperCase();
 
         fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=tr&format=json`)
@@ -483,7 +520,7 @@
           .then(data => {
             if (!data.results || data.results.length === 0) {
               cityTitle.textContent = 'BULUNAMADI';
-              setStatus('Hata');
+              setStatus('Hata!');
               return;
             }
 
@@ -493,7 +530,7 @@
             const lon = city.longitude;
 
             const unitParam = settings.unit === 'fahrenheit' ? '&temperature_unit=fahrenheit' : '';
-            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,surface_pressure,apparent_temperature&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto${unitParam}`;
+            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,dewpoint_2m,surface_pressure,apparent_temperature,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto${unitParam}`;
 
             fetch(apiUrl)
               .then(res => res.json())
@@ -514,9 +551,11 @@
                   appTemp.textContent = hourly.apparent_temperature ? `${Math.round(hourly.apparent_temperature[0])}${unitSym}` : '--';
                   humidityVal.textContent = hourly.relativehumidity_2m ? `%${hourly.relativehumidity_2m[0]}` : '--';
                   pressureVal.textContent = hourly.surface_pressure ? `${Math.round(hourly.surface_pressure[0])}hPa` : '--';
+                  dewpointVal.textContent = hourly.dewpoint_2m ? `${Math.round(hourly.dewpoint_2m[0])}${unitSym}` : '--';
                 }
 
                 windVal.textContent = `${Math.round(cw.windspeed)}km/h`;
+                winddirVal.textContent = getWindDirectionStr(cw.winddirection);
 
                 if (daily) {
                   sunriseVal.textContent = formatTime(daily.sunrise[0]);
@@ -524,19 +563,20 @@
                   uvVal.textContent = daily.uv_index_max[0] ? Math.round(daily.uv_index_max[0]) : '--';
                 }
 
-                // Güncelleme Saatini Kaydet & Göster
                 const now = new Date();
-                const updateStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-                lastUpdateEl.textContent = updateStr;
-                aboutUpdateEl.textContent = updateStr;
+                lastSuccessTime = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+                aboutUpdateEl.textContent = lastSuccessTime;
 
                 renderDailyList();
                 renderHourlyList();
-                setStatus('Hazır');
+                
+                // ALT BARDA SAAT + SAĞLAYICI ETİKETİ GÖSTERİMİ
+                const tag = apiLabels[settings.apiProvider] || 'OM';
+                setStatus(`${lastSuccessTime} • ${tag}`);
               })
-              .catch(() => setStatus('Hata'));
+              .catch(() => setStatus('Hata!'));
           })
-          .catch(() => setStatus('Hata'));
+          .catch(() => setStatus('Hata!'));
       };
 
       function renderDailyList() {
@@ -572,47 +612,108 @@
         for (let i = 0; i < 12; i++) {
           const timeStr = formatTime(hourly.time[i]);
           const temp = Math.round(hourly.temperature_2m[i]);
+          const code = hourly.weathercode ? hourly.weathercode[i] : 0;
+          const icon = getWeatherDetails(code).icon;
 
           const item = document.createElement('div');
           item.className = 'list-row';
           item.innerHTML = `
             <span>${timeStr}</span>
+            <span>${icon}</span>
             <span style="color:var(--accent);">${temp}${unitSym}</span>
           `;
           hourlyList.appendChild(item);
         }
       }
 
-      function renderFavsList() {
-        favsList.innerHTML = '';
-        favorites.forEach((c, idx) => {
-          const item = document.createElement('div');
-          item.className = 'list-row';
-          item.innerHTML = `
-            <span style="cursor:pointer;" onclick="getWeather('${c}'); showScreen('home');">${c.toUpperCase()}</span>
-            <span style="color:red; cursor:pointer;" onclick="removeFav(${idx})">[SİL]</span>
-          `;
-          favsList.appendChild(item);
-        });
+      function renderSearchOrFavs() {
+        const query = cityInput.value.trim();
+        listContainer.innerHTML = '';
+
+        if (!query) {
+          listHeader.textContent = 'FAVORİ ŞEHİRLER:';
+          if (!favorites.length) {
+            listContainer.innerHTML = '<div style="font-size:7.5px; color:var(--muted); text-align:center;">Favori şehir yok.</div>';
+            return;
+          }
+          favorites.forEach((c, idx) => {
+            const item = document.createElement('div');
+            item.className = 'list-row';
+            item.innerHTML = `
+              <span style="cursor:pointer;" onclick="getWeather('${c}'); showScreen('home');">${c.toUpperCase()}</span>
+              <span style="color:#ef4444; cursor:pointer;" onclick="removeFav(${idx})">[SİL]</span>
+            `;
+            listContainer.appendChild(item);
+          });
+        } else {
+          listHeader.textContent = 'ARAMA SONUÇLARI:';
+          fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&language=tr&format=json`)
+            .then(res => res.json())
+            .then(data => {
+              listContainer.innerHTML = '';
+              if (!data.results || data.results.length === 0) {
+                listContainer.innerHTML = '<div style="font-size:7.5px; color:var(--muted); text-align:center;">Sonuç bulunamadı.</div>';
+                return;
+              }
+
+              data.results.forEach(res => {
+                const cName = res.name;
+                const country = res.country_code ? res.country_code.toUpperCase() : '';
+                const isFav = favorites.includes(cName);
+
+                const item = document.createElement('div');
+                item.className = 'list-row';
+                item.innerHTML = `
+                  <span style="cursor:pointer;" onclick="getWeather('${cName}'); showScreen('home');">${cName} (${country})</span>
+                  <span style="color:var(--accent); cursor:pointer;" onclick="toggleFav('${cName}')">${isFav ? '★' : '[+]'}</span>
+                `;
+                listContainer.appendChild(item);
+              });
+            })
+            .catch(() => {
+              listContainer.innerHTML = '<div style="font-size:7.5px; color:red; text-align:center;">Arama hatası.</div>';
+            });
+        }
       }
+
+      window.toggleFav = function(cityName) {
+        if (favorites.includes(cityName)) {
+          favorites = favorites.filter(f => f !== cityName);
+        } else {
+          favorites.push(cityName);
+        }
+        saveAll();
+        renderSearchOrFavs();
+      };
 
       window.removeFav = function(idx) {
         favorites.splice(idx, 1);
         saveAll();
-        renderFavsList();
+        renderSearchOrFavs();
       };
 
       function applyTheme() {
         document.documentElement.className = settings.theme || 'theme-day';
       }
 
+      /* KISAYOL TUŞLARI KONTROLÜ */
       document.addEventListener('keydown', (e) => {
         const isInput = ['INPUT', 'SELECT'].includes(e.target.tagName);
+        const activeScreen = document.querySelector('.screen:not(.hidden)')?.getAttribute('data-screen');
+
         if (['Escape', 'SoftLeft', 'F1'].includes(e.key) && !isInput) { e.preventDefault(); showScreen('menu'); }
         if (['SoftRight', 'F2', 'Backspace', '0'].includes(e.key) && !isInput) { e.preventDefault(); goBack(); }
         
-        if (document.querySelector('.screen:not(.hidden)')?.id === 'screen-menu' && /^[1-6]$/.test(e.key)) {
-          const menuActions = ['home', 'daily', 'hourly', 'search', 'favs', 'settings'];
+        /* ANA EKRAN KISAYOL TUŞLARI (1: Yenile, 3: API Değiştir, 4/6: Şehirler) */
+        if (activeScreen === 'home' && !isInput) {
+          if (e.key === '1') { e.preventDefault(); getWeather(currentCity); }
+          if (e.key === '3') { e.preventDefault(); cycleApiProvider(); }
+          if (e.key === 'ArrowLeft' || e.key === '4') { e.preventDefault(); navigateFavorites(-1); }
+          if (e.key === 'ArrowRight' || e.key === '6') { e.preventDefault(); navigateFavorites(1); }
+        }
+
+        if (activeScreen === 'menu' && /^[1-5]$/.test(e.key)) {
+          const menuActions = ['home', 'daily', 'hourly', 'search', 'settings'];
           showScreen(menuActions[parseInt(e.key) - 1]);
         }
       });
@@ -621,18 +722,13 @@
         loadAll();
         unitSelect.value = settings.unit || 'celsius';
         themeSelect.value = settings.theme || 'theme-day';
+        apiSelect.value = settings.apiProvider || 'openmeteo';
+        apikeyInput.value = settings.apiKey || '';
         applyTheme();
 
-        btnSearch.onclick = () => { if (cityInput.value) { getWeather(cityInput.value); showScreen('home'); } };
-        cityInput.onkeydown = (e) => { if (e.key === 'Enter') { getWeather(cityInput.value); showScreen('home'); } };
-
-        btnAddFav.onclick = () => {
-          if (!favorites.includes(currentCity)) {
-            favorites.push(currentCity);
-            saveAll();
-            renderFavsList();
-            setStatus('Eklendi');
-          }
+        cityInput.oninput = () => {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(renderSearchOrFavs, 300);
         };
 
         unitSelect.onchange = (e) => {
@@ -647,7 +743,17 @@
           applyTheme();
         };
 
-        renderFavsList();
+        apiSelect.onchange = (e) => {
+          settings.apiProvider = e.target.value;
+          saveAll();
+          getWeather(currentCity);
+        };
+
+        apikeyInput.onchange = (e) => {
+          settings.apiKey = e.target.value;
+          saveAll();
+        };
+
         renderScreen('home');
         updateClock();
         setInterval(updateClock, 1000);
